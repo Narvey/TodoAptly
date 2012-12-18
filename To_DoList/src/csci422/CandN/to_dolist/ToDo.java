@@ -191,7 +191,7 @@ public class ToDo extends ListActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu)
 	{
-		if (FileSync.getInstance().isSyncCal() || FileSync.getInstance().isSaveFile()) 
+		if (FileSync.getInstance().isSyncCal() || FileSync.getInstance().isSyncFile()) 
 		{
 			menu.findItem(R.id.sync).setEnabled(true);
 		}
@@ -375,7 +375,7 @@ public class ToDo extends ListActivity {
 				c.close();
 			}
 			
-			if (FileSync.getInstance().isSaveFile())
+			if (FileSync.getInstance().isSyncFile())
 			{
 				FileSync.getInstance().saveToFile(helper);
 			}

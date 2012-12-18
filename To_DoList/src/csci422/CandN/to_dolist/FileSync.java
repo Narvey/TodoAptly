@@ -28,7 +28,7 @@ public class FileSync {
 
 	//to be used later but for sync the data base
 	//with the todo.txt file format or just a file
-	private boolean toSaveFile;
+	private boolean toSyncFile;
 
 	//this tells other methods that sync is running so that they will not
 	//with the state of this class
@@ -41,7 +41,7 @@ public class FileSync {
 	private FileSync()
 	{
 		toSyncCal = false;
-		toSaveFile = false;
+		toSyncFile = false;
 		isRunning = false;
 	}
 
@@ -77,7 +77,7 @@ public class FileSync {
 
 			if(h.getSave(c).equals("true"))
 			{
-				toSaveFile = true;
+				toSyncFile = true;
 			}
 		}
 		c.close();
@@ -92,11 +92,11 @@ public class FileSync {
 		Cursor c = h.getAll();
 		if(c.moveToFirst())
 		{//if the data base has at least one only needs one entry
-			h.update(c.getString(0), toSyncCal, toSaveFile);
+			h.update(c.getString(0), toSyncCal, toSyncFile);
 		}
 		else
 		{//other wise insert into the data base
-			h.insert(toSyncCal, toSaveFile);
+			h.insert(toSyncCal, toSyncFile);
 		}
 		c.close();
 	}
@@ -124,9 +124,9 @@ public class FileSync {
 	 * This method returns if it is to sync with a todo.txt file
 	 * @return: true if it is to sync with file
 	 */
-	public boolean isSaveFile()
+	public boolean isSyncFile()
 	{
-		return toSaveFile;
+		return toSyncFile;
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class FileSync {
 	 */
 	public void toggleSaveFile()
 	{
-		toSaveFile = (toSaveFile ? false : true);
+		toSyncFile = (toSyncFile ? false : true);
 	}
 
 	/**
@@ -150,12 +150,15 @@ public class FileSync {
 	 */
 	public void saveToFile(ToDoHelper help)
 	{
-		if (toSaveFile) 
+		if (toSyncFile) 
 		{
 			Cursor c = help.getAll("title");
 			c.moveToFirst();
-
-			//TODO: Nathan put function to save to the file LATER NOT NOW
+			String datum = "";
+			do{
+				if(help.getPriority(c)>-1)datum += "("+(char)('C'-help.getPriority(c))+")";	
+				//TODO: Save directly to file from this string each time.
+			}while(c.moveToNext());
 
 			c.close();
 		}//else do nothing
